@@ -1,33 +1,24 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import { BrowserRouter, Routes, Route, Link, NavLink } from 'react-router-dom'
-import axios from 'axios'
 
 import HomePage from './components/pages/HomePage'
 import ListPage from './components/pages/ListPage'
 import FormPage from './components/pages/FormPage'
 
 import Login from './components/Login'
-
 import Brand from './assets/brand.svg'
-
-axios.defaults.baseURL = import.meta.env.VITE_API_URL
 
 const nav_link_class = 'transition-all hover:text-sky-400'
 
+// sessionStorage.removeItem('venturing-token')
+
 function App() {
-
-	const [user, setUser] = useState(null)
-
-	useEffect(() => {
-		const userStorage = localStorage.getItem('venturing_user')
-		if( userStorage ) setUser(JSON.parse(userStorage))
-	}, [])
-
+	const [token, setToken] = useState(sessionStorage.getItem('venturing-token'))
 
   return (
 		<BrowserRouter>
 			<main className="bg-slate-800 min-h-screen">
-				{ user ? 
+				{ token ? 
 					(<div className="bg-slate-900 px-6 2xl:px-0">
 						<nav className="text-slate-300 text-center max-w-4xl py-5 mx-auto flex justify-center items-center gap-x-8 select-none">
 							<Link to="/" className="transition-all hover:scale-105">
@@ -58,10 +49,10 @@ function App() {
 
 				<div className="text-slate-300 max-w-2xl min-h-screen pt-10 mx-auto">
 					<Routes>
-						<Route path="/" element={user ? <HomePage/> : <Login />} exact />
-						<Route path="/movies" element={user ? <ListPage/> : <Login />} />
-						<Route path="/new" element={user ? <FormPage/> : <Login />} />
-						<Route path="/edit/:id" element={user ? <FormPage/> : <Login />} />
+						<Route path="/" element={token ? <HomePage/> : <Login setToken={t => setToken(t)} />} exact />
+						<Route path="/movies" element={token ? <ListPage/> : <Login setToken={t => setToken(t)} />} />
+						<Route path="/new" element={token ? <FormPage/> : <Login setToken={t => setToken(t)} />} />
+						<Route path="/edit/:id" element={token ? <FormPage/> : <Login setToken={t => setToken(t)} />} />
 					</Routes>
 				</div>
 			</main>
