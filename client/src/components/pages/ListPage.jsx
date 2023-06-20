@@ -12,9 +12,9 @@ export default function ListPage(){
 	const [loading, setLoading] = useState(true)
 
 	useEffect(() => {
-		axios.get()
+		axios.get('/movies', { headers: {'auth-token': sessionStorage.getItem('venturing-token')} })
 		.then(res => {
-			setMovies(res.data)
+			if( res.data.length) setMovies(res.data)
 			setLoading(false)
 		})
 		.catch(err => console.log('Error: ', err))
@@ -25,7 +25,7 @@ export default function ListPage(){
 
 		<Loader loading={loading}>
 			{ !movies ? 
-			(<div className="text-red-600 text-sm max-w-xl mx-auto select-none">
+			(<div className="text-red-600 text-sm text-center max-w-xl mx-auto select-none">
 				Lo sentimos pero aún no existen películas en nuestra base de datos
 			</div>) :
 			(<div>

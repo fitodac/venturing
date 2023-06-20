@@ -25,7 +25,7 @@ export default function FormPage(){
 
 	useEffect(() => {
 		if( id ){
-			axios.get(`/${id}`)
+			axios.get(`/movies/${id}`, { headers: {'auth-token': sessionStorage.getItem('venturing-token')} })
 			.then(resp => {
 				setData(resp.data[0])
 				setLoading(false)
@@ -75,7 +75,7 @@ export default function FormPage(){
 		setLoading(true)
 
 		if( id ){
-			axios.put(`/${id}`, data)
+			axios.put(`/movies/${id}`, data, { headers: {'auth-token': sessionStorage.getItem('venturing-token')} })
 			.then(resp => {
 				if( resp.data.errors ){
 					setErrors(resp.data.errors)
@@ -87,11 +87,12 @@ export default function FormPage(){
 				setLoading(false)
 			})
 			.catch(err => {
+				setErrors({error: err.response.data})
 				console.log('Error:', err)
 				setLoading(false)
 			})
 		}else{
-			axios.post('/', data)
+			axios.post('/movies', data, { headers: {'auth-token': sessionStorage.getItem('venturing-token')} })
 			.then(resp => {
 				if( resp.data.errors ){
 					setErrors(resp.data.errors)
@@ -102,6 +103,7 @@ export default function FormPage(){
 				setLoading(false)
 			})
 			.catch(err => {
+				setErrors({error: err.response.data})
 				console.log('Error:', err)
 				setLoading(false)
 			})
@@ -116,7 +118,7 @@ export default function FormPage(){
 		setLoading(true)
 		setConfirmation(false)
 	
-		axios.delete(`/${id}`)
+		axios.delete(`/movies/${id}`, { headers: {'auth-token': sessionStorage.getItem('venturing-token')} })
 		.then(resp => {
 			if( resp.data.errors ){
 				setErrors(resp.data.errors)
@@ -127,6 +129,7 @@ export default function FormPage(){
 			setLoading(false)
 		})
 		.catch(err => {
+			setErrors({error: err.response.data})
 			console.log('Error:', err)
 			setLoading(false)
 		})
@@ -135,6 +138,11 @@ export default function FormPage(){
 
 	return (<div className="grid gap-y-16 justify-center">
 		<Title content="Nueva película" />
+
+		{ errors.error ? 
+			(<div className="bg-red-700 bg-opacity-10 border-opacity-50 border border-red-800 text-red-600 text-sm text-center py-4 rounded-lg">{ errors.error }</div>) :
+			null }
+		
 
 		<Loader loading={loading}>
 			{ !success ? (
