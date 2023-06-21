@@ -1,7 +1,7 @@
 const express = require('express')
 const routerApi = require('./routes')
 const app = express()
-const { CLIENT_PORT } = process.env
+const { CLIENT_URL } = process.env
 const cors = require('cors')
 
 app.use(express.json())
