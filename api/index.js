@@ -5,5 +5,3 @@ const port = process.env.API_PORT || 3000
 app.listen(port, '0.0.0.0', () => {
 	console.log(`http://localhost:${port}`)
 })
-
-app.get('/', (req, res) => res.status(200).send('Hola API'))
