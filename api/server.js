@@ -1,12 +1,12 @@
 const express = require('express')
 const routerApi = require('./routes')
 const app = express()
-const { MODE, CLIENT_PORT } = process.env
+const { CLIENT_PORT } = process.env
 const cors = require('cors')
 
 app.use(express.json())
 app.use(cors({
-	origin: `http://localhost:${CLIENT_PORT}`,
+	origin: CLIENT_URL,
 	// origin: '*',
 	optionsSuccessStatus: 200
 }))
