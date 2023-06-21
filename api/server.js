@@ -11,7 +11,5 @@ app.use(cors({
 	optionsSuccessStatus: 200
 }))
 
-app.get('/', (req, res) => res.status(200).send('Hola API'))
-
 routerApi(app)
 module.exports = { app }
